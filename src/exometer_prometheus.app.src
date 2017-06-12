@@ -1,0 +1,10 @@
+{application, exometer_prometheus, [
+    {description, "Metrics scrape endpoint for Prometheus"},
+    {vsn, git},
+    {registered, []},
+    {applications, [
+        kernel,
+        stdlib
+    ]},
+    {env,[]}
+]}.
