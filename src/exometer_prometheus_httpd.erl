@@ -28,7 +28,8 @@ do(Req) ->
         {"GET", RequiredPath} ->
             Payload = exometer_report_prometheus:fetch(),
             ContentLength = integer_to_list(iolist_size(Payload)),
-            RespHeaders = [{code, 200}, {content_length, ContentLength}],
+            RespHeaders = [{code, 200}, {content_length, ContentLength},
+                           {content_type, "text/plain; version=0.0.4"}],
             {break, [{response, {response, RespHeaders, [Payload]}}]};
         _Else ->
             Payload = <<"404 - not found">>,

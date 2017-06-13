@@ -105,5 +105,4 @@ TODO
 ----
 
 * Add protocol buffer format
-* Add support for `httpd`
 * Proper support for Prometheus tags
