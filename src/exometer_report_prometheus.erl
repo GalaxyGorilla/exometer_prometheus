@@ -32,7 +32,11 @@ fetch() ->
 %% exometer reporter callbacks
 %% -------------------------------------------------------
 
-exometer_init(_Opts) ->
+exometer_init(Opts) ->
+    case lists:member(enable_httpd, Opts) of
+        true -> exometer_prometheus_httpd:start(Opts);
+        false -> ok
+    end,
     {ok, #state{}}.
 
 exometer_subscribe(Metric, DataPoints, _Interval, Opts, State = #state{entries=Entries}) ->

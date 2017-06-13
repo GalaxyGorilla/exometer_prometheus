@@ -4,10 +4,12 @@
 
 -define(REPORTER, exometer_report_prometheus).
 
+-define(OPTS, [enable_httpd, {host, {127,0,0,1}}, {port, 8081}, {path, "/metrics"}]).
+
 basic_test() ->
     error_logger:tty(false),
 
-    Subscribers = [{reporters, [{?REPORTER, []}]}],
+    Subscribers = [{reporters, [{?REPORTER, ?OPTS}]}],
     application:set_env(exometer, report, Subscribers),
     {ok, Apps} = application:ensure_all_started(exometer_prometheus),
 
@@ -34,8 +36,10 @@ basic_test() ->
 
     ?assertEqual(6, length(exometer_report:list_subscriptions(exometer_report_prometheus))),
 
-    Something = exometer_report_prometheus:fetch(),
-    ?debugFmt("~n~nResult of fetch:~n~n~s", [Something]),
+    {ok, {{"HTTP/1.1",200,"OK"}, _, Body}} = httpc:request("http://localhost:8081/metrics"),
+    ?debugFmt("~n~nResult of fetch:~n~n~s", [Body]),
+
+    {ok, {{"HTTP/1.1",404,"Object Not Found"}, _, _}} = httpc:request("http://localhost:8081/blabla"),
 
     ok = exometer_report:unsubscribe_all(?REPORTER, [some, counter]),
     ?assertEqual(5, length(exometer_report:list_subscriptions(exometer_report_prometheus))),
