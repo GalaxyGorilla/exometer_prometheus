@@ -7,12 +7,12 @@ exometer metrics.
 Build
 -----
 
-    $ rebar3 compile
+    $ ./rebar3 compile
 
 Test
 ----
 
-    $ rebar3 eunit
+    $ ./rebar3 eunit
 
 Usage
 -----

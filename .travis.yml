@@ -2,4 +2,4 @@ sudo: false
 language: erlang
 otp_release:
     - 19.3
-script: "rebar3 compile && rebar3 eunit"
+script: "./rebar3 compile && ./rebar3 eunit"
