@@ -102,7 +102,7 @@ make_metric_name(Metric) ->
 make_metric_name([], Akk) ->
     Akk;
 make_metric_name([Elem], Akk) ->
-    [atom_to_binary(Elem, utf8) | Akk];
+    [ioize(Elem) | Akk];
 make_metric_name([Elem | Metric], Akk) ->
     make_metric_name(Metric, [<<"_">>, atom_to_binary(Elem, utf8) | Akk]).
 
