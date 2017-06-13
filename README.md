@@ -1,4 +1,4 @@
-exometer_prometheus
+exometer_prometheus [![Build Status](https://travis-ci.org/GalaxyGorilla/exometer_fetch.svg)](https://travis-ci.org/GalaxyGorilla/exometer_prometheus)
 ===================
 
 This reporter is a building block for a Prometheus scrape point based on
