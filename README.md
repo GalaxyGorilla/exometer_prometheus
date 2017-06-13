@@ -1,8 +1,8 @@
 Exometer Prometheus [![Build Status](https://travis-ci.org/GalaxyGorilla/exometer_prometheus.svg)](https://travis-ci.org/GalaxyGorilla/exometer_prometheus)
 ===================
 
-This reporter is a building block for a Prometheus scrape point based on
-exometer metrics.
+This reporter is a building block for a Prometheus scrape endpoint based on
+Exometer metrics.
 
 Build
 -----
@@ -51,8 +51,8 @@ Exometer vs. Prometheus
 
 Despite the naming of metric types Exometer and Prometheus really differ
 somewhat on what each metric is capable of. The largest pain point might be
-that exometer histograms map on Prometheus summaries while Prometheus
-histograms have no real counterpart in exometer. Also exometer counters are not
+that Exometer histograms map on Prometheus summaries while Prometheus
+histograms have no real counterpart in Exometer. Also Exometer counters are not
 necessarily monotonely increasing while Prometheus counters rely on that. The
 following snippet will give you an overview how those types are mapped to each
 other. For precise examples just have a quick look into the tests, the snippet
