@@ -28,11 +28,13 @@ Add `exometer_prometheus` to your list of dependencies in `rebar.config`:
 Then just configure it:
 
 ```
-{exometer, 
-    {reporters, [
-        {exometer_report_prometheus, []}
-    ]}
-}.
+{exometer, [
+   {report, [
+       {reporters, [
+           {exometer_report_prometheus, []}
+       ]}
+   ]}
+]}
 ```
 
 There is just one single API function:
