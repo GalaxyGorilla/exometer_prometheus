@@ -37,6 +37,9 @@ basic_test() ->
     Something = exometer_report_prometheus:fetch(),
     ?debugFmt("~n~nResult of fetch:~n~n~s", [Something]),
 
+    ok = exometer_report:unsubscribe_all(?REPORTER, [some, counter]),
+    ?assertEqual(5, length(exometer_report:list_subscriptions(exometer_report_prometheus))),
+
     [application:stop(App) || App <- Apps],
     ok.
 
