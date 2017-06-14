@@ -1,1 +1,1 @@
-This folder is used as `document_root` and `server_root`.
+This folder is used as document_root and server_root by `httpd`.
