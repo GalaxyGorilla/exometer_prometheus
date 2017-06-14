@@ -48,10 +48,10 @@ Erlang binary). You can deliver these metrics using your own webserver,
 usually on port 8081 and path `/metrics`. However, take care in using the
 correct content-type `text/plain; version=0.0.4`.
 
-Build-in `httpd` Support
+Built-in httpd Support
 ------------------------
 
-If you want to use the build-in `httpd` service enable and configure it like
+If you want to use the built-in `httpd` service enable and configure it like
 this (the shown option values are defaults):
 
 ```
