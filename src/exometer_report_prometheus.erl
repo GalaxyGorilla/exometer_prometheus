@@ -40,12 +40,13 @@ exometer_init(Opts) ->
     {ok, #state{}}.
 
 exometer_subscribe(Metric, DataPoints, _Interval, Opts, State = #state{entries=Entries}) ->
+    Name = make_metric_name(Metric),
     Help = proplists:get_value(help, Opts, <<"undefined">>),
     Type = case proplists:get_value(type, Opts, undefined) of
                undefined -> map_type(exometer:info(Metric, type));
                SomeType  -> ioize(SomeType)
            end,
-    Entry = {Metric, DataPoints, Type, Help},
+    Entry = {Metric, DataPoints, Name, Type, Help},
     {ok, State#state{entries = Entries ++ [Entry]}}.
 
 exometer_unsubscribe(Metric, _DataPoints, _Extra, State = #state{entries=Entries}) ->
@@ -77,10 +78,10 @@ fetch_metrics(Entries) ->
 
 fetch_metrics([], Akk) ->
     Akk;
-fetch_metrics([{Metric, DataPoints, Type, Help} | Entries], Akk) ->
+fetch_metrics([{Metric, DataPoints, Name, Type, Help} | Entries], Akk) ->
     case exometer:get_value(Metric, DataPoints) of
         {ok, DataPointValues} ->
-            fetch_metrics(Entries, [{Metric, DataPointValues, Type, Help} | Akk]);
+            fetch_metrics(Entries, [{Metric, DataPointValues, Name, Type, Help} | Akk]);
         _Error ->
             fetch_metrics(Entries, Akk)
     end.
@@ -91,20 +92,19 @@ format_metrics(Metrics) ->
 
 format_metrics([], Akk) ->
     Akk;
-format_metrics([{Metric, DataPoints, Type, Help} | Metrics], Akk) ->
-    MetricName = make_metric_name(Metric),
-    Payload = [[<<"# HELP ">>, MetricName, <<" ">>, Help, <<"\n">>,
-                <<"# TYPE ">>, MetricName, <<" ">>, Type, <<"\n">>] |
-               [[MetricName, map_datapoint(DPName), <<" ">>, ioize(Value), <<"\n">>]
+format_metrics([{Metric, DataPoints, Name, Type, Help} | Metrics], Akk) ->
+    Payload = [[<<"# HELP ">>, Name, <<" ">>, Help, <<"\n">>,
+                <<"# TYPE ">>, Name, <<" ">>, Type, <<"\n">>] |
+               [[Name, map_datapoint(DPName), <<" ">>, ioize(Value), <<"\n">>]
                || {DPName, Value} <- DataPoints, is_valid_datapoint(DPName)]],
-    Payload1 = maybe_add_sum(Payload, MetricName, Metric, Type),
+    Payload1 = maybe_add_sum(Payload, Name, Metric, Type),
     format_metrics(Metrics, [Payload1, <<"\n">> | Akk]).
 
 make_metric_name(Metric) ->
     lists:reverse(make_metric_name(Metric, [])).
 
 make_metric_name([], Akk) ->
-    Akk;
+    re:replace(Akk, "-|\\.", "_", [global, {return,binary}]);
 make_metric_name([Elem], Akk) ->
     [ioize(Elem) | Akk];
 make_metric_name([Elem | Metric], Akk) ->
