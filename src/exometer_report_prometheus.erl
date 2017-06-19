@@ -104,11 +104,14 @@ make_metric_name(Metric) ->
     lists:reverse(make_metric_name(Metric, [])).
 
 make_metric_name([], Akk) ->
-    re:replace(Akk, "-|\\.", "_", [global, {return,binary}]);
+    Akk;
 make_metric_name([Elem], Akk) ->
-    [ioize(Elem) | Akk];
+    [normalize(Elem) | Akk];
 make_metric_name([Elem | Metric], Akk) ->
-    make_metric_name(Metric, [<<"_">>, ioize(Elem) | Akk]).
+    make_metric_name(Metric, [<<"_">>, normalize(Elem) | Akk]).
+
+normalize(Something) ->
+    re:replace(ioize(Something), "-|\\.", "_", [global, {return,binary}]).
 
 ioize(Atom) when is_atom(Atom) ->
     atom_to_binary(Atom, utf8);
