@@ -55,7 +55,7 @@ If you want to use the built-in `httpd` service enable and configure it like
 this (the shown option values are defaults):
 
 ```
-{exometer_report_prometheus, [enable_httpd, {host, {127,0,0,1}}, {port, 8081}, {path, "/metrics"}]}
+{exometer_report_prometheus, [enable_httpd, {host, any}, {port, 8081}, {path, "/metrics"}]}
 ```
 
 Exometer vs. Prometheus
