@@ -37,7 +37,17 @@ Then just configure it:
 ]}
 ```
 
-There is just one single API function:
+Subscribe a metric like this:
+
+```
+exometer_report:subscribe(?REPORTER, [my, metric, id], [value], manual, [{help, "some metric"}]).
+```
+
+If you know what you're doing you can also force the Prometheus type by
+adding e.g. `{type, counter}`. The mapping between Exometer and Prometheus
+metric types is explained below.
+
+To fetch Prometheus metrics there is just one single API function:
 
 ```
 exometer_report_prometheus:fetch().
