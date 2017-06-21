@@ -40,7 +40,7 @@ Then just configure it:
 Subscribe a metric like this:
 
 ```
-exometer_report:subscribe(?REPORTER, [my, metric, id], [value], manual, [{help, "some metric"}]).
+exometer_report:subscribe(exometer_report_prometheus, [my, metric, id], [value], manual, [{help, "some metric"}]).
 ```
 
 If you know what you're doing you can also force the Prometheus type by
