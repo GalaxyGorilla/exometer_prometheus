@@ -21,7 +21,7 @@ basic_test() ->
     ok = exometer_report:subscribe(?REPORTER, [some, other, counter], [value, ms_since_reset], manual,
                                    [{type, counter}, {help, "some other exometer counter with forced type"}]),
 
-    ok = exometer:update_or_create([some, gauge], 1, gauge, []),
+    ok = exometer:update_or_create([some, gauge], 1.1234567, gauge, []),
     ok = exometer_report:subscribe(?REPORTER, [some, gauge], [value, ms_since_reset], manual, [{help, "some exometer gauge"}]),
 
     ok = exometer:update_or_create([some, spiral], 1, spiral, []),

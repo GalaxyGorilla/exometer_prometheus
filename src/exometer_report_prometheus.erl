@@ -101,22 +101,16 @@ format_metrics([{Metric, DataPoints, Name, Type, Help} | Metrics], Akk) ->
     format_metrics(Metrics, [Payload1, <<"\n">> | Akk]).
 
 make_metric_name(Metric) ->
-    lists:reverse(make_metric_name(Metric, [])).
-
-make_metric_name([], Akk) ->
-    Akk;
-make_metric_name([Elem], Akk) ->
-    [normalize(Elem) | Akk];
-make_metric_name([Elem | Metric], Akk) ->
-    make_metric_name(Metric, [<<"_">>, normalize(Elem) | Akk]).
-
-normalize(Something) ->
-    re:replace(ioize(Something), "-|\\.", "_", [global, {return,binary}]).
+    NameList = lists:join($_, lists:map(fun ioize/1, Metric)),
+    NameBin = iolist_to_binary(NameList),
+    re:replace(NameBin, "-|\\.", "_", [global, {return,binary}]).
 
 ioize(Atom) when is_atom(Atom) ->
     atom_to_binary(Atom, utf8);
-ioize(Number) when is_integer(Number) or is_float(Number) ->
-    list_to_binary(integer_to_list(trunc(Number)));
+ioize(Number) when is_float(Number) ->
+    float_to_binary(Number, [{decimals, 4}]);
+ioize(Number) when is_integer(Number) ->
+    integer_to_binary(Number);
 ioize(Something) ->
     Something.
 

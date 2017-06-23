@@ -91,7 +91,7 @@ some_other_counter 1
 
 # HELP some_gauge some exometer gauge
 # TYPE some_gauge gauge
-some_gauge 1
+some_gauge 1.1235
 
 # HELP some_spiral some exometer spiral
 # TYPE some_spiral gauge
