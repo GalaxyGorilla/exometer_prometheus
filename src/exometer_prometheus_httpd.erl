@@ -11,14 +11,15 @@ start(Opts) ->
     inets:start(),
     RequiredPath = proplists:get_value(path, Opts, "/metrics"),
     application:set_env(exometer_prometheus, path, RequiredPath),
-    {ok, _Pid} = inets:start(httpd, [
+    {ok, Pid} = inets:start(httpd, [
                         {modules, [?MODULE]},
                         {port, proplists:get_value(port, Opts, 8081)},
                         {bind_address, proplists:get_value(host, Opts, any)},
                         {server_name, "prometheus"},
                         {document_root, code:priv_dir(exometer_prometheus)},
                         {server_root, code:priv_dir(exometer_prometheus)}
-                    ], inets).
+                    ], inets),
+    Pid.
 
 do(Req) ->
     Method = Req#mod.method,
@@ -37,4 +38,4 @@ do(Req) ->
             RespHeaders = [{code, 404}, {content_length, ContentLength}],
             {break, [{response, {response, RespHeaders, [Payload]}}]}
     end.
-            
+
