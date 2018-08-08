@@ -18,7 +18,7 @@ start(Opts) ->
                         {server_name, "prometheus"},
                         {document_root, code:priv_dir(exometer_prometheus)},
                         {server_root, code:priv_dir(exometer_prometheus)}
-                    ], inets).
+                    ], stand_alone).
 
 do(Req) ->
     Method = Req#mod.method,
@@ -37,4 +37,4 @@ do(Req) ->
             RespHeaders = [{code, 404}, {content_length, ContentLength}],
             {break, [{response, {response, RespHeaders, [Payload]}}]}
     end.
-            
+
