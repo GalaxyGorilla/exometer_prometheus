@@ -35,7 +35,9 @@ fetch() ->
 
 exometer_init(Opts) ->
     case lists:member(enable_httpd, Opts) of
-        true -> exometer_prometheus_httpd:start(Opts);
+        true ->
+            Pid = exometer_prometheus_httpd:start(Opts),
+            link(Pid);
         false -> ok
     end,
     {ok, #state{}}.
